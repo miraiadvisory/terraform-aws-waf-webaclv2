@@ -1,4 +1,4 @@
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/umotif-public/terraform-aws-waf-webaclv2?style=social)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/umotif-public/terraform-aws-waf-webaclv2)](https://github.com/umotif-public/terraform-aws-waf-webaclv2/releases/latest)
 
 # terraform-aws-waf-webaclv2
 
@@ -15,6 +15,8 @@ Supported WAF v2 components:
 - Logical Statements (AND, OR, NOT)
 - Size constraint statements
 - Label Match statements
+- Regex Pattern Match statements
+- Custom responses
 
 ## Terraform versions
 
@@ -203,7 +205,7 @@ module "waf" {
         sampled_requests_enabled   = false
       }
 
-      not_statement {
+      not_statement = {
         byte_match_statement = {
           field_to_match = {
             uri_path = "{}"
@@ -240,6 +242,36 @@ module "waf" {
         sampled_requests_enabled   = true
       }
     },
+    ### Regex Pattern Set Reference Rule example
+    # Refer to https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl#regex-pattern-set-reference-statement
+    # for all of the options available.
+    # Additional examples available in the examples directory
+    {
+      name = "MatchRegexRule-1"
+      priority = "1"
+
+      action = "none"
+
+      visibility_config = {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "RegexBadBotsUserAgent-metric"
+        sampled_requests_enabled   = false
+      }
+
+      # You need to previously create you regex pattern
+      # Refer to https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_regex_pattern_set
+      # for all of the options available.
+      regex_pattern_set_reference_statement = {
+        arn       = aws_wafv2_regex_pattern_set.example.arn
+        field_to_match = {
+          single_header = {
+            name = "user-agent"
+          }
+        }
+        priority  = 0
+        type      = "LOWERCASE" # The text transformation type
+      }
+    }
   ]
 
   tags = {
@@ -289,13 +321,12 @@ Importantly, make sure that Amazon Kinesis Data Firehose is using a name startin
 * [WAF ACL with geo match rules](https://github.com/umotif-public/terraform-aws-waf-webaclv2/tree/main/examples/wafv2-geo-rules)
 * [WAF ACL with and / or rules](https://github.com/umotif-public/terraform-aws-waf-webaclv2/tree/main/examples/wafv2-and-or-rules)
 * [WAF ACL with label match rules](https://github.com/umotif-public/terraform-aws-waf-webaclv2/tree/main/examples/wafv2-labelmatch-rules)
+* [WAF ACL with regex pattern rules](https://github.com/umotif-public/terraform-aws-waf-webaclv2/tree/main/examples/wafv2-regex-pattern-rules)
 
 
 ## Authors
 
 Module managed by:
-* [Marcin Cuber](https://github.com/marcincuber) [LinkedIn](https://www.linkedin.com/in/marcincuber/)
-* [Sean Pascual](https://github.com/seanpascual) [LinkedIn](https://www.linkedin.com/in/sean-edward-pascual)
 * [Abdul Wahid](https://github.com/Ohid25) [LinkedIn](https://www.linkedin.com/in/abdul-wahid/)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
@@ -303,14 +334,14 @@ Module managed by:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.50 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.7 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.50 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0.0 |
 
 ## Modules
 
@@ -334,6 +365,7 @@ No modules.
 | <a name="input_allow_default_action"></a> [allow\_default\_action](#input\_allow\_default\_action) | Set to `true` for WAF to allow requests by default. Set to `false` for WAF to block requests by default. | `bool` | `true` | no |
 | <a name="input_create_alb_association"></a> [create\_alb\_association](#input\_create\_alb\_association) | Whether to create alb association with WAF web acl | `bool` | `true` | no |
 | <a name="input_create_logging_configuration"></a> [create\_logging\_configuration](#input\_create\_logging\_configuration) | Whether to create logging configuration in order start logging from a WAFv2 Web ACL to Amazon Kinesis Data Firehose. | `bool` | `false` | no |
+| <a name="input_custom_response_bodies"></a> [custom\_response\_bodies](#input\_custom\_response\_bodies) | Custom response bodies to be referenced on a per rule basis. https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl#custom-response-body | <pre>list(object({<br>    key          = string<br>    content      = string<br>    content_type = string<br>  }))</pre> | `[]` | no |
 | <a name="input_description"></a> [description](#input\_description) | A friendly description of the WebACL | `string` | `null` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Whether to create the resources. Set to `false` to prevent the module from creating any resources | `bool` | `true` | no |
 | <a name="input_log_destination_configs"></a> [log\_destination\_configs](#input\_log\_destination\_configs) | The Amazon Kinesis Data Firehose Amazon Resource Name (ARNs) that you want to associate with the web ACL. Currently, only 1 ARN is supported. | `list(string)` | `[]` | no |

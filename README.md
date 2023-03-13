@@ -15,24 +15,25 @@ Supported WAF v2 components:
 - Logical Statements (AND, OR, NOT)
 - Size constraint statements
 - Label Match statements
+- Regex Match statements
 - Regex Pattern Match statements
 - Custom responses
+- Attach Custom Rule Groups
 
 ## Terraform versions
 
-Terraform 0.13+ Pin module version to `~> v3.0`. Submit pull-requests to `main` branch.
-Terraform 0.12 < 0.13. Pin module version to `~> v1.0`.
+Terraform 0.13+ Pin module version to `~> 4.0`. Submit pull-requests to `main` branch.
 
 ## Usage
 
 Please pin down version of this module to exact version
 
-If referring directly to the code instead of a pinned version, take note that from release 3.0.0 all future changes will only be made to the `main` branch.
+If referring directly to the code instead of a pinned version, take note that from release 4.0.0 all future changes will only be made to the `main` branch.
 
 ```hcl
 module "waf" {
   source = "umotif-public/waf-webaclv2/aws"
-  version = "~> 3.0.0"
+  version = "~> 4.0.0"
 
   name_prefix = "test-waf-setup"
   alb_arn     = module.alb.arn
@@ -61,10 +62,28 @@ module "waf" {
       managed_rule_group_statement = {
         name        = "AWSManagedRulesCommonRuleSet"
         vendor_name = "AWS"
-        excluded_rule = [
-          "SizeRestrictions_QUERYSTRING",
-          "SizeRestrictions_BODY",
-          "GenericRFI_QUERYARGUMENTS"
+        rule_action_overrides = [
+          {
+            action_to_use = {
+              count = {}
+            }
+
+            name = "SizeRestrictions_QUERYSTRING"
+          },
+          {
+            action_to_use = {
+              count = {}
+            }
+
+            name = "SizeRestrictions_BODY"
+          },
+          {
+            action_to_use = {
+              count = {}
+            }
+
+            name = "GenericRFI_QUERYARGUMENTS"
+          }
         ]
       }
     },
@@ -217,6 +236,81 @@ module "waf" {
         }
       }
     },
+    ### Regex Match Rule example
+    {
+      name     = "RegexMatchRule-9"
+      priority = "9"
+
+      action = "allow"
+
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        metric_name                = "RegexMatchRule-metric"
+        sampled_requests_enabled   = false
+      }
+
+      byte_match_statement = {
+          field_to_match = {
+            uri_path = "{}"
+          }
+          regex_string         = "/foo/"
+          priority              = 0
+          type                  = "NONE"
+        }
+    ### Attach Custom Rule Group example
+    {
+      name     = "CustomRuleGroup-1"
+      priority = "9"
+
+      override_action = "none"
+
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        metric_name                = "CustomRuleGroup-metric"
+        sampled_requests_enabled   = false
+      }
+
+      rule_group_reference_statement = {
+        arn = "arn:aws:wafv2:eu-west-1:111122223333:regional/rulegroup/rulegroup-test/a1bcdef2-1234-123a-abc0-1234a5bc67d8"
+      }
+    ### Regex Match Rule example
+    {
+      name     = "RegexMatchRule-9"
+      priority = "9"
+
+      action = "allow"
+
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        metric_name                = "RegexMatchRule-metric"
+        sampled_requests_enabled   = false
+      }
+
+      byte_match_statement = {
+          field_to_match = {
+            uri_path = "{}"
+          }
+          regex_string         = "/foo/"
+          priority              = 0
+          type                  = "NONE"
+        }
+    ### Attach Custom Rule Group example
+    {
+      name     = "CustomRuleGroup-1"
+      priority = "9"
+
+      override_action = "none"
+
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        metric_name                = "CustomRuleGroup-metric"
+        sampled_requests_enabled   = false
+      }
+
+      rule_group_reference_statement = {
+        arn = "arn:aws:wafv2:eu-west-1:111122223333:regional/rulegroup/rulegroup-test/a1bcdef2-1234-123a-abc0-1234a5bc67d8"
+      }
+    },
     ### Size constraint Rule example
     # Refer to https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl#size-constraint-statement
     # for all of the options available.
@@ -287,7 +381,7 @@ module "waf" {
 provider "aws" {
   alias = "us-east"
 
-  version = ">= 3.38"
+  version = ">= 4.44.0"
   region  = "us-east-1"
 }
 
@@ -297,7 +391,7 @@ module "waf" {
   }
 
   source = "umotif-public/waf-webaclv2/aws"
-  version = "~> 3.0.0"
+  version = "~> 4.0.0"
 
   name_prefix = "test-waf-setup-cloudfront"
   scope = "CLOUDFRONT"
@@ -335,13 +429,13 @@ Module managed by:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.7 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.52.0, < 5.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.52.0, < 5.0.0 |
 
 ## Modules
 
@@ -390,6 +484,7 @@ No modules.
 | <a name="output_web_acl_assoc_resource_arn"></a> [web\_acl\_assoc\_resource\_arn](#output\_web\_acl\_assoc\_resource\_arn) | The ARN of the ALB attached to the Web ACL Association |
 | <a name="output_web_acl_capacity"></a> [web\_acl\_capacity](#output\_web\_acl\_capacity) | The web ACL capacity units (WCUs) currently being used by this web ACL. |
 | <a name="output_web_acl_id"></a> [web\_acl\_id](#output\_web\_acl\_id) | The ID of the WAFv2 WebACL. |
+| <a name="output_web_acl_logging_configuration_id"></a> [web\_acl\_logging\_configuration\_id](#output\_web\_acl\_logging\_configuration\_id) | The ID of the Web ACL logging configuration resource |
 | <a name="output_web_acl_name"></a> [web\_acl\_name](#output\_web\_acl\_name) | The name of the WAFv2 WebACL. |
 | <a name="output_web_acl_rule_names"></a> [web\_acl\_rule\_names](#output\_web\_acl\_rule\_names) | List of created rule names |
 | <a name="output_web_acl_visibility_config_name"></a> [web\_acl\_visibility\_config\_name](#output\_web\_acl\_visibility\_config\_name) | The web ACL visibility config name |

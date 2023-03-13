@@ -1,3 +1,11 @@
+terraform {
+  required_version = ">= 0.13.7"
+
+  required_providers {
+    aws = ">= 4.44.0"
+  }
+}
+
 provider "aws" {
   region = "eu-west-1"
 }
@@ -38,11 +46,6 @@ module "waf" {
       managed_rule_group_statement = {
         name        = "AWSManagedRulesCommonRuleSet"
         vendor_name = "AWS"
-        excluded_rule = [
-          "SizeRestrictions_QUERYSTRING",
-          "SizeRestrictions_BODY",
-          "GenericRFI_QUERYARGUMENTS"
-        ]
       }
     },
     {

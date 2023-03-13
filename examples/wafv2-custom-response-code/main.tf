@@ -1,3 +1,11 @@
+terraform {
+  required_version = ">= 0.13.7"
+
+  required_providers {
+    aws = ">= 4.44.0"
+  }
+}
+
 provider "aws" {
   region = "eu-west-1"
 }
@@ -48,13 +56,7 @@ module "waf" {
 
       managed_rule_group_statement = {
         name        = "AWSManagedRulesBotControlRuleSet"
-        vendor_name = "AWS",
-        excluded_rule = [
-          "SignalNonBrowserUserAgent",
-          "CategoryHttpLibrary",
-          "SignalAutomatedBrowser",
-          "CategoryMonitoring"
-        ]
+        vendor_name = "AWS"
       }
 
       visibility_config = {

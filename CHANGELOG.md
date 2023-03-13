@@ -5,7 +5,41 @@ All notable changes to this project will be documented in this file.
 <a name="unreleased"></a>
 ## [Unreleased]
 
-- feat: add label_match_statement to managed_rule_group_statement
+- fix: typo
+- feat: action block cpatcha and chanllenge rules.
+- Fix: Match Pattern Headers ([#82](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/82))
+
+
+<a name="4.0.1"></a>
+## [4.0.1] - 2023-01-26
+
+- Deprecate 'excluded_rule' and set minimum provider version to 4.44.0 ([#79](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/79))
+
+
+<a name="4.0.0"></a>
+## [4.0.0] - 2023-01-25
+
+- Update Changelog ([#78](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/78))
+- Exclude rule deprecated in AWS ([#77](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/77))
+- Add output `web_acl_logging_configuration_id` ([#75](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/75))
+- Add dynamic rule_group_reference_statement block to attach custom rule groups ([#70](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/70))
+- Added support for Regex Match Statements ([#63](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/63))
+- Enable the block to attach custom rule groups
+- Bug fixes for `rate_based_statement`  with `forwarded_ip_config` and `ip_set_reference_statement` with `ip_set_forwarded_ip_config` ([#69](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/69))
+- Updating to meeting requirements of fix to terraform provider.
+- Small corrections to sizeconstraint rule.
+- Correction to use equals sign.
+- Updating sizeconstraint rule to have oversizehandling for body.
+- Revert "Correct ip_set example"
+- Correct ip_set example
+- Adding forwarded_ip_config for ip_set. Added regex_set for AND Not Statement. ([#65](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/65))
+- Added support for Regex Match Statements ([#63](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/63))
+
+
+<a name="3.8.1"></a>
+## [3.8.1] - 2022-05-26
+
+- feat: add label_match_statement to managed_rule_group_statement ([#60](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/60))
 
 
 <a name="3.8.0"></a>
@@ -200,7 +234,10 @@ All notable changes to this project will be documented in this file.
 - Initial commit
 
 
-[Unreleased]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/3.8.0...HEAD
+[Unreleased]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.0.1...HEAD
+[4.0.1]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.0.0...4.0.1
+[4.0.0]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/3.8.1...4.0.0
+[3.8.1]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/3.8.0...3.8.1
 [3.8.0]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/3.7.3...3.8.0
 [3.7.3]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/3.7.2...3.7.3
 [3.7.2]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/3.7.1...3.7.2

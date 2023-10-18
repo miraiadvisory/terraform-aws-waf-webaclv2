@@ -1,15 +1,3 @@
-terraform {
-  required_version = ">= 0.13.7"
-
-  required_providers {
-    aws = ">= 4.44.0"
-  }
-}
-
-provider "aws" {
-  region = "eu-west-1"
-}
-
 #####
 # Web Application Firewall configuration
 #####
@@ -46,7 +34,7 @@ module "waf" {
       managed_rule_group_statement = {
         name        = "AWSManagedRulesCommonRuleSet"
         vendor_name = "AWS"
-        version     = "Version_2.0"
+        version     = "Version_1.6"
       }
     },
     {
@@ -137,7 +125,9 @@ module "waf" {
       priority = 0
       size_constraint_statement = {
         field_to_match = {
-          body = "{}"
+          body = {
+            oversize_handling = "CONTINUE"
+          }
         }
         comparison_operator = "GT"
         size                = 8192

@@ -1,15 +1,3 @@
-terraform {
-  required_version = ">= 0.13.7"
-
-  required_providers {
-    aws = ">= 4.44.0"
-  }
-}
-
-provider "aws" {
-  region = "eu-west-1"
-}
-
 #####
 # Web Application Firewall configuration
 #####
@@ -124,6 +112,60 @@ module "waf" {
         search_string         = "testuser"
         priority              = 0
         type                  = "LOWERCASE" # The text transformation type
+      }
+
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        sampled_requests_enabled   = false
+      }
+    },
+    {
+      # Blocks requests which dont contain 'authorization' in any header key
+      name     = "block-unauthorized"
+      priority = "6"
+      action   = "block"
+      not_statement = {
+        byte_match_statement = {
+          field_to_match = {
+            headers = {
+              match_pattern = {
+                "all" = {}
+              }
+              match_scope       = "Key"
+              oversize_handling = "CONTINUE"
+            }
+          }
+          positional_constraint = "CONTAINS"
+          search_string         = "authorization"
+          priority              = 0
+          type                  = "NONE" # The text transformation type
+        }
+      }
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        sampled_requests_enabled   = false
+      }
+    },
+    {
+      # Blocks a single user by checking the username header
+      name     = "block-cookie"
+      priority = "7"
+      action   = "block"
+
+      byte_match_statement = {
+        field_to_match = {
+          cookies = {
+            match_scope       = "KEY"
+            oversize_handling = "CONTINUE"
+            match_pattern = {
+              "all" = {}
+            }
+          }
+        }
+        positional_constraint = "CONTAINS"
+        search_string         = "cookie"
+        priority              = 0
+        type                  = "NONE" # The text transformation type
       }
 
       visibility_config = {

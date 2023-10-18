@@ -5,8 +5,100 @@ All notable changes to this project will be documented in this file.
 <a name="unreleased"></a>
 ## [Unreleased]
 
-- fix: typo
-- feat: action block cpatcha and chanllenge rules.
+- chore: cleanup versions.tf
+
+
+<a name="5.1.0"></a>
+## [5.1.0] - 2023-07-18
+
+- add suport for 'allow', 'block' and 'captcha' actions ([#115](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/115))
+
+
+<a name="5.0.1"></a>
+## [5.0.1] - 2023-07-18
+
+- Fix nested required `text_transformation` and go back to previous behaviour ([#113](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/113))
+
+
+<a name="5.0.0"></a>
+## [5.0.0] - 2023-07-18
+
+- Upgrade to AWS provider 5.0 ([#114](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/114))
+- Bump google.golang.org/grpc from 1.52.1 to 1.53.0 in /test ([#111](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/111))
+
+###
+
+dependency-type: indirect
+...
+
+
+<a name="4.6.1"></a>
+## [4.6.1] - 2023-05-19
+
+- Fix invalid input map in byte_match_statement ([#104](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/104))
+
+
+<a name="4.6.0"></a>
+## [4.6.0] - 2023-05-19
+
+- Add support for scope down ip_set_reference_statement in the ratelimit rule ([#103](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/103))
+- Fix 'Invalid value for "inputMap" parameter: the given object has no attribute "type"' ([#102](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/102))
+
+
+<a name="4.5.0"></a>
+## [4.5.0] - 2023-05-17
+
+- Add xss_match_statement support ([#101](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/101))
+- Set 'upper' function for 'match_scope' ([#100](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/100))
+
+
+<a name="4.4.0"></a>
+## [4.4.0] - 2023-05-12
+
+- Add support for sqli_match_statement ([#99](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/99))
+- Allow OR statement inside AND statement ([#96](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/96))
+- Fix for headers field_to_match [#94](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/94) ([#95](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/95))
+- adds managed rule group config block with bot control ([#93](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/93))
+
+
+<a name="4.3.0"></a>
+## [4.3.0] - 2023-04-28
+
+- Scope down OR not statements ([#97](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/97))
+
+
+<a name="4.2.0"></a>
+## [4.2.0] - 2023-03-22
+
+- Add support for cookie matching ([#92](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/92))
+
+
+<a name="4.1.2"></a>
+## [4.1.2] - 2023-02-20
+
+- Bump golang.org/x/net from 0.5.0 to 0.7.0 in /test ([#87](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/87))
+- Bump github.com/hashicorp/go-getter from 1.6.2 to 1.7.0 in /test ([#84](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/84))
+- Rule_action_override - hotfix ([#85](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/85))
+
+###
+
+dependency-type: indirect
+...
+
+dependency-type: indirect
+...
+
+
+<a name="4.1.1"></a>
+## [4.1.1] - 2023-02-15
+
+- Fix multiple rule_action_override ([#83](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/83))
+
+
+<a name="4.1.0"></a>
+## [4.1.0] - 2023-02-09
+
+- feat: action block captcha and challenge rules supported ([#80](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/80))
 - Fix: Match Pattern Headers ([#82](https://github.com/umotif-public/terraform-aws-waf-webaclv2/issues/82))
 
 
@@ -234,7 +326,19 @@ All notable changes to this project will be documented in this file.
 - Initial commit
 
 
-[Unreleased]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.0.1...HEAD
+[Unreleased]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/5.1.0...HEAD
+[5.1.0]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/5.0.1...5.1.0
+[5.0.1]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/5.0.0...5.0.1
+[5.0.0]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.6.1...5.0.0
+[4.6.1]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.6.0...4.6.1
+[4.6.0]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.5.0...4.6.0
+[4.5.0]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.4.0...4.5.0
+[4.4.0]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.3.0...4.4.0
+[4.3.0]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.2.0...4.3.0
+[4.2.0]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.1.2...4.2.0
+[4.1.2]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.1.1...4.1.2
+[4.1.1]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.1.0...4.1.1
+[4.1.0]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.0.1...4.1.0
 [4.0.1]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/3.8.1...4.0.0
 [3.8.1]: https://github.com/umotif-public/terraform-aws-waf-webaclv2/compare/3.8.0...3.8.1
